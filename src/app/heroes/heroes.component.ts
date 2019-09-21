@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 
 import { Hero } from '../hero';
 
-import { HEROES } from '../mock-heroes';
+//import { HEROES } from '../mock-heroes';
+import { HeroService } from '../hero.service';
 
 @Component({
   selector: 'app-heroes',
@@ -10,12 +11,23 @@ import { HEROES } from '../mock-heroes';
   styleUrls: ['./heroes.component.css']
 })
 export class HeroesComponent implements OnInit {
-  heroes = HEROES;
-  selectedHero: Hero;
+  heroes: Hero[]; // declares as an array of type Hero
+  selectedHero: Hero; // declares as type Hero
 
-  constructor() { }
+  // Inject the service
+  constructor(private heroService: HeroService) {}
+
+  getHeroes(): void {
+    // implies that heroes is grabbed synchronously, but with a. real server, it will need to be async (because the service must wait for the server to respond and the browser won't block)
+    //this.heroes = this.heroService.getHeroes();
+
+    //wait for the observable to emit an array of heroes
+    this.heroService.getHeroes()
+      .subscribe(heroes => this.heroes = heroes);
+  }
 
   ngOnInit() {
+    this.getHeroes();
   }
 
   onSelect(hero: Hero): void {
