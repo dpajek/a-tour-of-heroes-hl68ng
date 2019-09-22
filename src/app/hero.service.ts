@@ -13,6 +13,7 @@ export class HeroService {
 
   constructor(private messageService: MessagesService) { }
 
+  // no longre works if async DB used
   getHeroes_old(): Hero[] {
     return HEROES;
   }
